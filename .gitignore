@@ -1,6 +1,7 @@
 .venv/
 .edge-capture/
 .edge-day2/
+.edge-day3/
 .idea/
 __pycache__/
 *.py[cod]

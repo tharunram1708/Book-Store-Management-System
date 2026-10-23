@@ -32,7 +32,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # MySQL is the default. Use DB_ENGINE=sqlite3 for a local demo without MySQL.
 if os.getenv("DB_ENGINE", "mysql").lower() == "sqlite3":
-    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
+    sqlite_name = os.getenv("SQLITE_NAME", str(BASE_DIR / "db.sqlite3"))
+    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": sqlite_name}}
 else:
     DATABASES = {"default": {"ENGINE": "django.db.backends.mysql", "NAME": os.getenv("DB_NAME", "bookstore_db"),
                  "USER": os.getenv("DB_USER", "root"), "PASSWORD": os.getenv("DB_PASSWORD", ""),

@@ -13,6 +13,7 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="nav"><div class="navbar-nav me-auto"><a class="nav-link" href="{% url 'book_list' %}">Books</a><a class="nav-link" href="{% url 'category_list' %}">Categories</a></div>
       <div class="navbar-nav align-items-lg-center gap-lg-2">
+        {% if user.is_staff %}<a class="nav-link" href="{% url 'admin_dashboard' %}">Admin dashboard</a>{% endif %}
         {% if user.is_authenticated %}<a class="nav-link" href="{% url 'cart_detail' %}">Cart <span class="badge rounded-pill text-bg-primary">{{ cart_item_count }}</span></a><a class="nav-link" href="{% url 'order_history' %}">Orders</a><a class="nav-link" href="{% url 'profile' %}">My profile</a><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn btn-sm btn-outline-light">Log out</button></form>
         {% else %}<a class="nav-link" href="{% url 'login' %}">Log in</a><a class="btn btn-sm btn-light" href="{% url 'register' %}">Create account</a>{% endif %}
       </div>

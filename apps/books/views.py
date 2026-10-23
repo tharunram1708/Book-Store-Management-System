@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import BookForm, CatalogFilterForm
 from .models import Book
@@ -25,7 +25,7 @@ def book_detail(request, pk):
     book = get_object_or_404(Book.objects.select_related("category"), pk=pk)
     return render(request, "books/book_detail.html", {"book": book})
 
-@login_required
+@staff_member_required(login_url="login")
 def book_create(request):
     form = BookForm(request.POST or None, request.FILES or None)
     if request.method == "POST" and form.is_valid():
@@ -34,7 +34,7 @@ def book_create(request):
         return redirect("book_detail", pk=book.pk)
     return render(request, "books/book_form.html", {"form": form, "heading": "Add a book"})
 
-@login_required
+@staff_member_required(login_url="login")
 def book_update(request, pk):
     book = get_object_or_404(Book, pk=pk)
     form = BookForm(request.POST or None, request.FILES or None, instance=book)
@@ -44,7 +44,7 @@ def book_update(request, pk):
         return redirect("book_detail", pk=book.pk)
     return render(request, "books/book_form.html", {"form": form, "heading": "Update book", "book": book})
 
-@login_required
+@staff_member_required(login_url="login")
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == "POST":

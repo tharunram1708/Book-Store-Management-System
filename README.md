@@ -1,64 +1,76 @@
 # PageTurner Bookstore
 
-A Django bookstore and inventory application built in two project days. MySQL is the default database; SQLite is available for local development and demonstrations.
-
-## Project layout
-
-```text
-apps/                 Django domain apps
-  accounts/           Registration, authentication, and profiles
-  books/              Catalog and book management
-  categories/         Category management
-  cart/               Persistent user carts
-  orders/               Checkout, order history, and status
-  dashboard/          Home route
-config/               Django settings, root URLs, ASGI, and WSGI
-templates/            Shared and app-specific HTML templates
-static/               CSS and other static assets
-media/                Uploaded book covers (local only)
-docs/submissions/     Day 1 and Day 2 screenshot evidence
-deliverables/         Submission archives
-manage.py             Django management entry point
-```
-
-## Setup
-
-1. Create and activate a virtual environment, then install dependencies:
-
-   ```powershell
-   py -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   python -m pip install -r requirements.txt
-   ```
-
-2. Create a MySQL database named `bookstore_db` (or change `DB_NAME`). Copy `.env.example` to `.env` and add your database credentials and a private `SECRET_KEY`.
-
-   To use SQLite locally, set `$env:DB_ENGINE='sqlite3'` before running Django commands.
-
-3. Apply migrations and create an admin account:
-
-   ```powershell
-   python manage.py migrate
-   python manage.py createsuperuser
-   python manage.py runserver
-   ```
-
-   Open `http://127.0.0.1:8000/`. Add categories in `/categories/` or Django admin before adding books. Registration and book management are available in the site navigation.
+A Django bookstore and inventory application with customer accounts, searchable book listings, a persistent cart, checkout, order history, and a staff dashboard.
 
 ## Features
 
-- Registration, login/logout, profile editing, and protected account pages.
-- Book search by title, author, or ISBN; category and price filters; title, price, and date sorting.
-- Book and category create, edit, and delete flows.
-- Book catalog fields: title, author, ISBN, price, description, category, stock, and cover image.
-- Persistent per-user carts with quantity updates, item removal, subtotal, and total.
-- Checkout rechecks stock while locking cart and book rows, creates an order and order items, decrements stock in one database transaction, and clears the cart.
-- Order history and detail pages with status tracking. Staff can update order status in Django admin.
-- Bootstrap templates and development-time book cover uploads.
+- Register, log in, update a profile, browse books, and filter by title, author, ISBN, category, and price.
+- Add books to a persistent cart and update quantities with stock validation.
+- Place orders with a database transaction that checks stock, creates order items, decrements inventory, and empties the cart.
+- View private order history and order details.
+- Open the staff dashboard at `/dashboard/` for book, order, sales, and low-stock summaries.
+- Manage books, categories, and orders through the dashboard links to Django admin.
+- Update order statuses to Pending, Confirmed, Shipped, Delivered, or Cancelled. Cancelling restores inventory once; reopening a cancelled order checks and reserves stock again.
+- Manage book and category records only as staff. Customer pages and order records remain scoped to their owners.
 
-## Deliverables
+## Requirements
 
-- [Day 1 submission notes and screenshots](docs/submissions/day1/README.md)
-- [Day 2 submission notes and screenshots](docs/submissions/day2/README.md)
-- Day 1 archive: `deliverables/day1/day1-submission.zip`
-- Day 2 archive: `deliverables/day2/day2-submission.zip`
+- Python 3.10 or newer
+- pip
+- SQLite for the local demo, or MySQL 8+ for a MySQL setup
+
+Install dependencies in a virtual environment:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+## Run locally with SQLite
+
+SQLite is convenient for development and the complete workflow tests. In PowerShell:
+
+```powershell
+$env:DB_ENGINE = "sqlite3"
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Visit <http://127.0.0.1:8000/> for the store, <http://127.0.0.1:8000/dashboard/> for the staff dashboard, and <http://127.0.0.1:8000/admin/> for Django admin. Add categories and books using Django admin or the staff links, then register a regular customer account to run through checkout.
+
+To use a separate SQLite file, set `SQLITE_NAME` to its path before running the commands. By default the project uses `db.sqlite3` in the project directory.
+
+## Run with MySQL
+
+Copy `.env.example` to `.env`, create a MySQL database, and set `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, and `DB_PORT`. Keep a private `SECRET_KEY` in `.env`. Leave `DB_ENGINE` unset (or set it to `mysql`), then run:
+
+```powershell
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Never commit `.env`, database files, or uploaded book covers. `.env.example` contains placeholders only.
+
+## Tests
+
+Run the automated workflow and permission tests with SQLite:
+
+```powershell
+$env:DB_ENGINE = "sqlite3"
+python manage.py test
+python manage.py check
+python manage.py makemigrations --check --dry-run
+```
+
+The tests cover registration, browsing and searching, cart and checkout, stock decrement, order history, staff dashboard summaries, cancellation and restocking, insufficient stock on reopening, non-staff access restrictions, and invalid checkout input. The manual scenario and results are recorded in [Day 3 test results](docs/submissions/day3/TEST_RESULTS.md).
+
+## Submission material
+
+- [Day 1 notes and screenshots](docs/submissions/day1/README.md)
+- [Day 2 notes and screenshots](docs/submissions/day2/README.md)
+- [Day 3 notes, test results, and screenshots](docs/submissions/day3/README.md)
+- `requirements.txt` lists runtime dependencies.

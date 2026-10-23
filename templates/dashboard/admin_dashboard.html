@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Admin dashboard · PageTurner{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+  <div><p class="eyebrow mb-1">STORE OPERATIONS</p><h1 class="h2 mb-0">Admin dashboard</h1></div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-primary" href="{% url 'admin:books_book_changelist' %}">Manage books</a>
+    <a class="btn btn-outline-primary" href="{% url 'admin:categories_category_changelist' %}">Manage categories</a>
+    <a class="btn btn-primary" href="{% url 'admin:orders_order_changelist' %}">Manage orders</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3"><div class="card dashboard-stat h-100"><div class="card-body"><p class="text-secondary mb-1">Books</p><p class="display-6 fw-semibold mb-0">{{ book_count }}</p><a href="{% url 'admin:books_book_changelist' %}" class="small">View inventory</a></div></div></div>
+  <div class="col-6 col-xl-3"><div class="card dashboard-stat h-100"><div class="card-body"><p class="text-secondary mb-1">Orders</p><p class="display-6 fw-semibold mb-0">{{ order_count }}</p><a href="{% url 'admin:orders_order_changelist' %}" class="small">Review orders</a></div></div></div>
+  <div class="col-6 col-xl-3"><div class="card dashboard-stat h-100"><div class="card-body"><p class="text-secondary mb-1">Confirmed sales</p><p class="h2 fw-semibold mb-0">₹{{ sales_total|floatformat:2 }}</p><span class="small text-secondary">Confirmed, shipped, and delivered</span></div></div></div>
+  <div class="col-6 col-xl-3"><div class="card dashboard-stat h-100"><div class="card-body"><p class="text-secondary mb-1">Low stock</p><p class="display-6 fw-semibold mb-0">{{ low_stock_count }}</p><span class="small text-secondary">At or below {{ low_stock_threshold }} copies</span></div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-xl-7">
+    <section class="card h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center"><h2 class="h5 mb-0">Recent orders</h2><a href="{% url 'admin:orders_order_changelist' %}">All orders</a></div>
+      <div class="table-responsive"><table class="table align-middle mb-0">
+        <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Update</th></tr></thead>
+        <tbody>{% for order in recent_orders %}<tr>
+          <td><a href="{% url 'admin:orders_order_change' order.pk %}" class="fw-semibold">{{ order.order_number }}</a><div class="small text-secondary">{{ order.created_at|date:'M j, Y' }}</div></td>
+          <td>{{ order.shipping_name }}</td><td>₹{{ order.total|floatformat:2 }}</td>
+          <td><span class="badge status-{{ order.status }}">{{ order.get_status_display }}</span></td>
+          <td><form method="post" action="{% url 'admin_order_status' order.pk %}" class="d-flex gap-2">{% csrf_token %}<label class="visually-hidden" for="status-{{ order.pk }}">Status for {{ order.order_number }}</label><select id="status-{{ order.pk }}" class="form-select form-select-sm" name="status">{% for value,label in status_form.fields.status.choices %}<option value="{{ value }}" {% if value == order.status %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button class="btn btn-sm btn-outline-primary">Save</button></form></td>
+        </tr>{% empty %}<tr><td colspan="5" class="text-center text-secondary py-4">No orders yet.</td></tr>{% endfor %}</tbody>
+      </table></div>
+    </section>
+  </div>
+  <div class="col-xl-5">
+    <section class="card h-100">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center"><h2 class="h5 mb-0">Low-stock books</h2><a href="{% url 'admin:books_book_changelist' %}?stock__lte={{ low_stock_threshold }}">Inventory</a></div>
+      <div class="list-group list-group-flush">
+        {% for book in low_stock_books %}<div class="list-group-item d-flex justify-content-between align-items-center gap-3"><div><a href="{% url 'admin:books_book_change' book.pk %}" class="fw-semibold">{{ book.title }}</a><div class="small text-secondary">{{ book.category.name }}</div></div><span class="badge text-bg-warning">{{ book.stock }} left</span></div>
+        {% empty %}<div class="p-4 text-center text-secondary">All books are above the low-stock threshold.</div>{% endfor %}
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

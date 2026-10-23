@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count, ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import CategoryForm
@@ -10,7 +10,7 @@ def category_list(request):
     return render(request, "categories/category_list.html", {"categories": Category.objects.annotate(book_count=Count("books"))})
 
 
-@login_required
+@staff_member_required(login_url="login")
 def category_create(request):
     form = CategoryForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
@@ -20,7 +20,7 @@ def category_create(request):
     return render(request, "categories/category_form.html", {"form": form, "heading": "Add a category"})
 
 
-@login_required
+@staff_member_required(login_url="login")
 def category_update(request, pk):
     category = get_object_or_404(Category, pk=pk)
     form = CategoryForm(request.POST or None, instance=category)
@@ -31,7 +31,7 @@ def category_update(request, pk):
     return render(request, "categories/category_form.html", {"form": form, "heading": "Update category", "category": category})
 
 
-@login_required
+@staff_member_required(login_url="login")
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == "POST":

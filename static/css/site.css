@@ -1,4 +1,5 @@
 body { background: #fbfaf8; color: #27251f; }
+.dashboard-stat { border: 0; box-shadow: 0 .25rem 1rem rgba(24, 39, 75, .07); }
 .navbar-brand { letter-spacing: .03em; }
 .eyebrow { color: #8b5e34; font-size: .72rem; font-weight: 700; letter-spacing: .12em; }
 .book-card { border: 1px solid #ece8e2; box-shadow: 0 3px 12px #2921170a; transition: transform .15s ease, box-shadow .15s ease; }
@@ -15,7 +16,6 @@ body { background: #fbfaf8; color: #27251f; }
 .qty-input { width: 76px; }
 .status-pending { background: #fff2cc; color: #805b00; }
 .status-confirmed { background: #dbeafe; color: #1e40af; }
-.status-processing { background: #e0e7ff; color: #3730a3; }
 .status-shipped { background: #cffafe; color: #155e75; }
 .status-delivered { background: #dcfce7; color: #166534; }
 .status-cancelled { background: #fee2e2; color: #991b1b; }
