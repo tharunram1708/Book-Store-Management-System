@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Delete {{ book.title }} · PageTurner{% endblock %}
+{% block content %}<div class="form-panel mx-auto"><h1 class="h2">Delete book?</h1><p>Are you sure you want to delete <strong>{{ book.title }}</strong> by {{ book.author }}?</p><form method="post">{% csrf_token %}<a class="btn btn-outline-secondary" href="{% url 'book_detail' book.pk %}">Cancel</a> <button class="btn btn-danger">Delete book</button></form></div>{% endblock %}

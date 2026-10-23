@@ -1,0 +1,21 @@
+body { background: #fbfaf8; color: #27251f; }
+.navbar-brand { letter-spacing: .03em; }
+.eyebrow { color: #8b5e34; font-size: .72rem; font-weight: 700; letter-spacing: .12em; }
+.book-card { border: 1px solid #ece8e2; box-shadow: 0 3px 12px #2921170a; transition: transform .15s ease, box-shadow .15s ease; }
+.book-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px #29211714; }
+.cover { height: 240px; object-fit: cover; }
+.cover-placeholder { display: grid; place-items: center; color: #fff; font: 700 5rem Georgia, serif; background: linear-gradient(135deg, #66735b, #b58b5d); }
+.detail-cover { width: 100%; max-height: 520px; object-fit: cover; }
+.form-panel { max-width: 620px; background: white; border: 1px solid #ece8e2; border-radius: .75rem; padding: clamp(1.25rem, 4vw, 2.5rem); box-shadow: 0 8px 26px #2921170a; }
+.form-control, .form-select { border-color: #dcd7cf; }
+.preserve-lines { white-space: pre-line; }
+.empty-state { background: white; border: 1px dashed #dcd7cf; border-radius: .75rem; }
+.filter-panel, .summary-card { background: #fff; border: 1px solid #ece8e2; border-radius: .75rem; padding: 1.25rem; }
+.category-card { border-color: #ece8e2; box-shadow: 0 3px 12px #2921170a; }
+.qty-input { width: 76px; }
+.status-pending { background: #fff2cc; color: #805b00; }
+.status-confirmed { background: #dbeafe; color: #1e40af; }
+.status-processing { background: #e0e7ff; color: #3730a3; }
+.status-shipped { background: #cffafe; color: #155e75; }
+.status-delivered { background: #dcfce7; color: #166534; }
+.status-cancelled { background: #fee2e2; color: #991b1b; }

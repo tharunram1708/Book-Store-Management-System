@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Delete category · PageTurner{% endblock %}
+{% block content %}<div class="form-panel mx-auto"><h1 class="h2">Delete category?</h1><p>Delete <strong>{{ category.name }}</strong>? Categories containing books are protected.</p><form method="post">{% csrf_token %}<a class="btn btn-outline-secondary" href="{% url 'category_list' %}">Cancel</a> <button class="btn btn-danger">Delete category</button></form></div>{% endblock %}

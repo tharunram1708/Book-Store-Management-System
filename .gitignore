@@ -1,0 +1,11 @@
+.venv/
+.edge-capture/
+.edge-day2/
+.idea/
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+media/**
+!media/.gitkeep
+staticfiles/
